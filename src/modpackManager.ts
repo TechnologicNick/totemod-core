@@ -21,4 +21,33 @@ export default class ModpackManager {
         await modpack.exportToDirectory(dir);
     }
 
+    static async reloadModpacks() {
+        // Clear ModpackManager.modpacks first
+        for (let localId in this.modpacks) delete this.modpacks[localId];
+
+        let modpackCount = 0;
+
+        for (let dirname of await fs.promises.readdir(Core.getModpacksDirectory())) {
+            let dir = path.join(Core.getModpacksDirectory(), dirname);
+            let modpackJson = path.join(dir, "modpack.json");
+
+            if (!fs.existsSync(modpackJson)) {
+                console.warn(`Directory in modpacks directory is not a modpack: "${dir}"`);
+                continue;
+            }
+
+            let modpack = new Modpack();
+            modpack.dir = dir;
+            modpack.loadConfig();
+
+            this.modpacks[modpack.config.localId] = modpack;
+
+            modpackCount++;
+        }
+
+        console.log(`Loaded ${modpackCount} modpack${modpackCount === 1 ? '' : 's'}`);
+
+        return modpackCount;
+    }
+
 }

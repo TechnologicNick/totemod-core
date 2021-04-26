@@ -18,7 +18,7 @@ export interface Dependency {
     name: string;
     optional?: boolean;
     localId: string;
-    preview: string;
+    preview?: string;
     steam?: {
         fileId: number;
     };
@@ -37,7 +37,7 @@ export interface ModpackConfig {
 
     modloader: string;
 
-    author: string;
+    author?: string;
     contributors: Contributor[];
 
     dependencies: Dependency[];
@@ -48,6 +48,8 @@ export class Modpack {
     config!: ModpackConfig;
 
     constructor(config?: ModpackConfig | {}) {
+        console.log("Config", config);
+
         this.config = Object.assign({
             name: "Unnamed modpack",
             description: "This modpack has no description",
@@ -56,7 +58,6 @@ export class Modpack {
 
             modloader: "totemod-core",
 
-            author: "MECHANIC",
             contributors: [],
 
             dependencies: []
@@ -85,7 +86,7 @@ export class Modpack {
         
         if (!jsonPath) throw `No modpack.json found in "${dir}"`;
 
-        const config = await (await fs.promises.readFile(jsonPath)).toJSON();
+        const config = JSON.parse(await (await fs.promises.readFile(jsonPath)).toString());
         
         return Object.assign(this.config, config);
     }
@@ -100,6 +101,14 @@ export class Modpack {
         const jsonPath = path.join(dir, "modpack.json");
 
         fs.promises.writeFile(jsonPath, JSON.stringify(this.config, null, '\t'));
+    }
+
+    addDependency(...dependency: Dependency[]) {
+        return this.config.dependencies.push(...dependency)
+    }
+
+    setDependencies(dependencies: Dependency[]) {
+        return this.config.dependencies = dependencies;
     }
 
 }
