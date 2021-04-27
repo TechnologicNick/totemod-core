@@ -1,6 +1,6 @@
 {
   "name": "totemod-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The core package of totemod-launcher, a mod loader and launcher for Scrap Mechanic",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

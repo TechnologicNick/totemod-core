@@ -46,6 +46,9 @@ export interface ModpackConfig {
 export class Modpack {
     dir!: string;
     config!: ModpackConfig;
+    isInstalled: boolean | undefined;
+    isBuilt: boolean | undefined;
+    isPlayable: boolean | undefined;
 
     constructor(config?: ModpackConfig | {}) {
         console.log("Config", config);
@@ -109,6 +112,34 @@ export class Modpack {
 
     setDependencies(dependencies: Dependency[]) {
         return this.config.dependencies = dependencies;
+    }
+
+    async checkInstalled() {
+        console.log("Checking if all dependencies are installed...");
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.isInstalled = false;
+    }
+
+    async install() {
+        console.log("Faking install...");
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.isInstalled = true;
+    }
+
+    async checkBuilt() {
+        console.log("Checking if the modpack is built...");
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.isBuilt = false;
+    }
+
+    async build() {
+        console.log("Faking build...");
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.isBuilt = true;
     }
 
 }
