@@ -9,6 +9,8 @@ export default class ModpackManager {
         [localId: string]: Modpack;
     } = {};
 
+    static isLoaded = false;
+
     static async createModpack(name: string, description: string) {
         const modpack = new Modpack({ name: name, description: description });
 
@@ -46,6 +48,8 @@ export default class ModpackManager {
         }
 
         console.log(`Loaded ${modpackCount} modpack${modpackCount === 1 ? '' : 's'}`);
+
+        this.isLoaded = true;
 
         return modpackCount;
     }
